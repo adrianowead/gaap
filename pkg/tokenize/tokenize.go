@@ -10,9 +10,9 @@ import (
 // TextToSentence given a string and returns separeted senteces
 func TextToSentence(text string) []string {
 	b := StringToByte(text)
-	b = normalizeNewLine(b)
+	b = NormalizeNewLine(b)
 
-	text = byteToString(b)
+	text = ByteToString(b)
 
 	var sentences = sentence.Tokenizer(text)
 
@@ -24,11 +24,13 @@ func StringToByte(text string) []byte {
 	return []byte(text)
 }
 
-func byteToString(b []byte) string {
+// ByteToString converts bytes to string
+func ByteToString(b []byte) string {
 	return string(b[:])
 }
 
-func normalizeNewLine(d []byte) []byte {
+// NormalizeNewLine convert any endlines to linux endline
+func NormalizeNewLine(d []byte) []byte {
 	// replace CR LF \r\n (windows) with LF \n (unix)
 	d = bytes.Replace(d, []byte{13, 10}, []byte{10}, -1)
 
