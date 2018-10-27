@@ -27,3 +27,23 @@ func TestTokenizer(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkTokenizer5sentences(b *testing.B) {
+	test := "Mussum Ipsum, cacilds vidis litro abertis.\nMé faiz elementum girarzis, nisi eros vermeio.\nPraesent vel viverra nisi.\nMauris aliquet nunc non turpis scelerisque, eget.\nPaisis, filhis, espiritis santis. Interagi no mé, cursus quis, vehicula ac nisi."
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Tokenizer(test)
+	}
+}
+
+func BenchmarkTokenizer2sentences(b *testing.B) {
+	test := "Mussum Ipsum, cacilds vidis litro abertis.\nMé faiz elementum girarzis, nisi eros vermeio."
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Tokenizer(test)
+	}
+}
