@@ -8,6 +8,7 @@ import (
 // TextToSentence given a string and returns separeted senteces
 func TextToSentence(text string) []string {
 	b := StringToByte(text)
+	b = normalizeNewLine(b)
 
 	text = byteToString(b)
 	return sentences
@@ -20,4 +21,14 @@ func StringToByte(text string) []byte {
 
 func byteToString(b []byte) string {
 	return string(b[:])
+}
+
+func normalizeNewLine(d []byte) []byte {
+	// replace CR LF \r\n (windows) with LF \n (unix)
+	d = bytes.Replace(d, []byte{13, 10}, []byte{10}, -1)
+
+	// replace CF \r (mac) with LF \n (unix)
+	d = bytes.Replace(d, []byte{13}, []byte{10}, -1)
+
+	return d
 }
