@@ -2,6 +2,8 @@
 package tokenize
 
 import (
+	"bytes"
+
 	"../sentence"
 )
 
@@ -11,6 +13,9 @@ func TextToSentence(text string) []string {
 	b = normalizeNewLine(b)
 
 	text = byteToString(b)
+
+	var sentences = sentence.Tokenizer(text)
+
 	return sentences
 }
 

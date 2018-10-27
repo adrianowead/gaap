@@ -5,9 +5,19 @@ import (
 	"strings"
 )
 
-// SentenceTokenizer given string and split sentences
-func SentenceTokenizer(text string) []string {
-	var sentences = strings.Split(text, `\n`)
+// Tokenizer given string and split sentences
+func Tokenizer(text string) []string {
+	var sentences = strings.Split(text, "\n")
+	var out []string
 
-	return sentences
+	for _, sentence := range sentences {
+		var tmp = strings.Trim(sentence, " ")
+
+		// discart empty lines
+		if len(tmp) > 0 {
+			out = append(out, tmp)
+		}
+	}
+
+	return out
 }
