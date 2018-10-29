@@ -1,0 +1,43 @@
+{P}|1|[2]^"a" // a cada 2 paragrafos (faz 1 e pula 2), iniciar com "a"
+
+{} // define o tipo (P:paragrafos, W:palavras, C:letras)
+|| // define o limite de itens a serem processados, ex: %2 a cada 2 parágrados apenas uma vez, mas se estiver |2|[%2] a cada 2 itens até duas vezes
+    0 indica que será no conteúdo inteiro
+[] // a cada quantos itens definidos em {} será aplicada a regra (valor mínimo 0, todos os parágrados, 1 indica que pula 1 para cada aplicado)
+    também pode ser aplicada uma fórmula, ex %2 será apenas válidos os itens pares (mod 2)
+    *2 pega o atual e multiplica 2
+    +2 pega o atual e soma 2
+
+^ ou $ ou # ou : // ^ define que será aplicado no início do item definido em {}, $ indica que será no final do item
+    # define que terá subcomando
+    : indica que será no início ou fina, por exemplo |2|[:2] inidica a aplicação nos dois últimos itens, desconsiderando o contador |2|
+"" // entre aspas duplas ou simples, é definido o que será procurado
+
+// no lugar das aspas, é possível definir uma subexpressão entre parênteses
+ex:
+{P}|0|[%2]#({W}|0|[%2]^"br")
+
+O exemplo acima, define que em todos os parágrafos pares, pegará a cada 2 palavras pares (dentro do parágrafo da primeira expressão)
+e aplicará a regra para que a sequência de palavras 
+
+// podem ser definidos mais de um item por vez
+ex:
+{P,W}|2|[%5]$"l" // as duas primeiras ocorrências de parágrados múltiplos de 5, devem terminar em "l"
+                    e as duas primeiras ocorrências (independente do parágrafo) de palavras múltiplas de 5 devem terminar em "l"
+
+
+Para aplicar a mesma regra acima, para todas as palavras multiplas de 5, dentro de parágrafos multiplos de 5, seria assim:
+{P}|0|[%5]#({W}|2|[%5]$"l")
+
+A regra acima aplica para todos os parágrafos multiplos de 5 em todo o documento,
+dentro deles todas as palavras multiplas de 5 (até duas ocorrências) devem terminar em "l"
+
+
+{P}|1|[%2]^@"minha mensagem espalhada"
+o exemplo acima possui uma notação especial, neste caso o @ indica que uma mensagem será escondida
+neste caso, uma letra por parágrafo, apenas uma vez, em parágrafos pares no começo de cada parágrafo
+
+{P}|1|[%2]$@"minha mensagem espalhada" 
+o exemplo acima é a mesma coisa, só que no final dos parágrafos
+
+o @ não pode ser usado em conjunto com o #, apenas com ^ ou $
