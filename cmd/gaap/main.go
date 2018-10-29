@@ -26,8 +26,8 @@ func check(e error) {
 }
 
 func testSentence(text string) {
-	var tokens = tokenize.TextToSentence(text)
+	var sentences = tokenize.TextToSentence(text)
+	var words = tokenize.TextToWord(text)
 
-	// fmt.Println(tokens[0])
-	fmt.Println(len(tokens))
+	fmt.Printf("%d sentences, %d words, first word: '%s' %s", len(sentences), len(words), words[0], []byte{13, 10})
 }
