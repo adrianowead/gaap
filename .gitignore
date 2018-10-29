@@ -2,3 +2,5 @@
 *.code-workspace
 
 cmd/gaap/build/
+
+build/

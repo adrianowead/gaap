@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd build
+cd ../../build
 
 # comprimir o binario resultante após a compilação
 
