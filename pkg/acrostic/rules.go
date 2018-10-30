@@ -19,7 +19,7 @@ type Rules struct {
 }
 
 var basicStructure = "{}||[]"
-var validCommands = []string{`^`, `$`, `#`}
+var validCommands = []string{`^`, `$`, `#`, `@`}
 var validObjects = []string{`P`, `W`}
 var validEachOp = []string{`%`, `:`, `*`, `+`}
 var validEachOpAfter = []string{`:`}
