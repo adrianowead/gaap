@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"path/filepath"
 
 	"../../pkg/acrostic"
 	"../../pkg/tokenize"
@@ -9,7 +11,7 @@ import (
 
 func main() {
 
-	//absPath, _ := filepath.Abs("testdata/lero-lero.txt")
+	// absPath, _ := filepath.Abs("testdata/lero-lero.txt")
 
 	//text, err := ioutil.ReadFile(absPath)
 
@@ -20,6 +22,11 @@ func main() {
 	// testAcrosticRules(`{P}|0|[%2]#({W}|0|[:2]^"br")`)
 	// testAcrosticRules(`{P}|1|[:2]^"a"`)
 	testAcrosticRules(`{P}|1|[:2]@"veras que um filho teu nao foge a luta"`)
+
+	absPath, _ := filepath.Abs("testdata/sentence-acrostic.txt")
+	text, _ := ioutil.ReadFile(absPath)
+
+	testAcrosticSentence(string(text), `{P}|1|[:2]@"veras que um filho teu nao foge a luta"`)
 }
 
 func check(e error) {
@@ -36,9 +43,13 @@ func testSentence(text string) {
 }
 
 func testAcrosticRules(rules string) {
-	valid, out := acrostic.IsValidRules(rules)
+	// valid, out := acrostic.IsValidRules(rules)
 
-	fmt.Println(out, valid)
-	fmt.Println("")
-	fmt.Println(out.Sub)
+	// fmt.Println(out, valid)
+	// fmt.Println("")
+	// fmt.Println(out.Sub)
+}
+
+func testAcrosticSentence(text string, rule string) {
+	acrostic.ApplyRules(text, rule)
 }
