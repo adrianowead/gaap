@@ -17,8 +17,9 @@ func main() {
 
 	//testSentence(string(text))
 	// testAcrosticRules(`{P}|1|[2]^"a"`)
-	testAcrosticRules(`{P}|0|[%2]#({W}|0|[:2]^"br")`)
+	// testAcrosticRules(`{P}|0|[%2]#({W}|0|[:2]^"br")`)
 	// testAcrosticRules(`{P}|1|[:2]^"a"`)
+	testAcrosticRules(`{P}|1|[:2]@"veras que um filho teu nao foge a luta"`)
 }
 
 func check(e error) {
