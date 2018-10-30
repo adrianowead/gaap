@@ -16,7 +16,8 @@ func main() {
 	//check(err)
 
 	//testSentence(string(text))
-	testAcrosticRules(`{P}|1|[2]^"a"`)
+	// testAcrosticRules(`{P}|1|[2]^"a"`)
+	testAcrosticRules(`{P}|0|[%2]#({W}|0|[%2]^"br")`)
 }
 
 func check(e error) {
@@ -33,5 +34,9 @@ func testSentence(text string) {
 }
 
 func testAcrosticRules(rules string) {
-	fmt.Println(acrostic.IsValidRules(rules))
+	valid, out := acrostic.IsValidRules(rules)
+
+	fmt.Println(out, valid)
+	fmt.Println("")
+	fmt.Println(out.Sub)
 }
