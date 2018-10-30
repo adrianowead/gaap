@@ -20,11 +20,6 @@ ex:
 O exemplo acima, define que em todos os parágrafos pares, pegará a cada 2 palavras pares (dentro do parágrafo da primeira expressão)
 e aplicará a regra para que a sequência de palavras 
 
-// podem ser definidos mais de um item por vez
-ex:
-{P,W}|2|[%5]$"l" // as duas primeiras ocorrências de parágrados múltiplos de 5, devem terminar em "l"
-                    e as duas primeiras ocorrências (independente do parágrafo) de palavras múltiplas de 5 devem terminar em "l"
-
 
 Para aplicar a mesma regra acima, para todas as palavras multiplas de 5, dentro de parágrafos multiplos de 5, seria assim:
 {P}|0|[%5]#({W}|2|[%5]$"l")
