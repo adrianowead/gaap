@@ -7,10 +7,10 @@
     também pode ser aplicada uma fórmula, ex %2 será apenas válidos os itens pares (mod 2)
     *2 pega o atual e multiplica 2
     +2 pega o atual e soma 2
+    : indica que será no início ou fim, por exemplo |2|[:2] inidica a aplicação nos dois últimos itens, desconsiderando o contador |2|
 
 ^ ou $ ou # ou : // ^ define que será aplicado no início do item definido em {}, $ indica que será no final do item
     # define que terá subcomando
-    : indica que será no início ou fina, por exemplo |2|[:2] inidica a aplicação nos dois últimos itens, desconsiderando o contador |2|
 "" // entre aspas duplas ou simples, é definido o que será procurado
 
 // no lugar das aspas, é possível definir uma subexpressão entre parênteses

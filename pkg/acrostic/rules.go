@@ -10,6 +10,7 @@ type Rules struct {
 	Object string // {}
 	Count  int    // ||
 	Each   int    // []
+	EachOp string // %(mod) : * +
 	Cmd    string // ^ $ #
 	Exp    string // ""
 	Sub    *Rules
@@ -19,7 +20,15 @@ var basicStructure = "{}||[]"
 var validCommands = []string{`^`, `$`, `#`}
 
 // ParseRules process the received expression and returns Rules struct
-func ParseRules(rules string, out *Rules) bool {
+func ParseRules(rules string) (bool, Rules) {
+	r := &Rules{}
+
+	valid := parseCommand(rules, r)
+
+	return valid, *r
+}
+
+func parseCommand(rules string, out *Rules) bool {
 	valid := HaveValidStructure(rules, out)
 	out.Exp = extractEspression(rules, out.Cmd)
 
@@ -96,7 +105,7 @@ func extractEspression(rules string, cmd string) string {
 func parseSubCommand(sub string) (bool, *Rules) {
 	r := &Rules{}
 
-	valid := ParseRules(sub, r)
+	valid := parseCommand(sub, r)
 
 	return valid, r
 }
