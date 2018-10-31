@@ -51,78 +51,24 @@ func ApplyRules(text string, rule string) (bool, []Status, string) {
 }
 
 func applySentenceParagraph(text string, r *Rules) (bool, []Status) {
-
 	pagraph := strings.Split(text, "\n")
 
-	for i := 0; i < len(pagraph); i++ {
-		if len(strings.TrimSpace(string(pagraph[i]))) == 0 {
-			// deleting
-			pagraph = append(pagraph[:i], pagraph[i+1:]...)
-		}
-	}
-
-	r.Exp = clearPunctuation(r.Exp)
-	r.Exp = removeAccents(r.Exp)
-	r.Exp = strings.TrimSpace(r.Exp)
-	r.Exp = strings.Replace(r.Exp, " ", "", -1)
-
-	validChars := regexp.MustCompile(`[^a-zA-Z0-9]`)
-
-	posRule := 0
-	out := []Status{}
-
-	allOk := true
-	beforeP := 0 - r.Each
-	countOk := 0
-
-	for k := 0; k < len(pagraph); k++ {
-
-		currP := strings.TrimSpace(string(pagraph[k]))
-
-		if canProcessThis(beforeP, k, r, len(pagraph)) && len(currP) > 0 && len(r.Exp) > posRule {
-			beforeP = k
-
-			tmp := string([]rune(currP)[0])
-			tmp = removeAccents(tmp)
-			tmp = strings.ToLower(tmp)
-
-			v := validChars.ReplaceAllString(tmp, "")
-			curr := strings.ToLower(string(r.Exp[posRule]))
-
-			o := Status{}
-			o.Received = v
-			o.Needed = curr
-			o.TextPosition = k
-			o.isError = true
-
-			// only if is a valid char
-			if len(v) > 0 && tmp == curr && curr != " " && curr != "" {
-				o.isError = false
-				countOk++
-			}
-
-			out = append(out, o)
-
-			posRule++
-		}
-	}
-
-	if countOk == len(r.Exp) {
-		allOk = true
-	}
-
-	return allOk, out
+	return characterProcess(pagraph, r)
 }
 
 func applySentenceWord(text string, r *Rules) (bool, []Status) {
 	text = clearPunctuation(text)
 
-	word := strings.Split(text, " ")
+	words := strings.Split(text, " ")
 
-	for i := 0; i < len(word); i++ {
-		if len(strings.TrimSpace(string(word[i]))) == 0 {
+	return characterProcess(words, r)
+}
+
+func characterProcess(itens []string, r *Rules) (bool, []Status) {
+	for i := 0; i < len(itens); i++ {
+		if len(strings.TrimSpace(string(itens[i]))) == 0 {
 			// deleting
-			word = append(word[:i], word[i+1:]...)
+			itens = append(itens[:i], itens[i+1:]...)
 		}
 	}
 
@@ -140,10 +86,10 @@ func applySentenceWord(text string, r *Rules) (bool, []Status) {
 	beforeP := 0 - r.Each
 	countOk := 0
 
-	for k := 0; k < len(word); k++ {
-		currP := strings.TrimSpace(string(word[k]))
+	for k := 0; k < len(itens); k++ {
+		currP := strings.TrimSpace(string(itens[k]))
 
-		if canProcessThis(beforeP, k, r, len(word)) && len(currP) > 0 && len(r.Exp) > posRule {
+		if canProcessThis(beforeP, k, r, len(itens)) && len(currP) > 0 && len(r.Exp) > posRule {
 			beforeP = k
 
 			tmp := string([]rune(currP)[0])
