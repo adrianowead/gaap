@@ -26,7 +26,8 @@ func main() {
 	absPath, _ := filepath.Abs("testdata/sentence-acrostic.txt")
 	text, _ := ioutil.ReadFile(absPath)
 
-	testAcrosticSentence(string(text), `{P}|1|[%2]@"verás que um filho teu não foge a luta"`)
+	// testAcrosticSentence(string(text), `{P}|1|[%2]@"verás que um filho teu não foge a luta"`)
+	testAcrosticSentence(string(text), `{W}|1|[%17]@"verás que um filho teu não foge a luta"`)
 }
 
 func check(e error) {

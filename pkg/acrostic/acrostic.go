@@ -41,6 +41,8 @@ func ApplyRules(text string, rule string) (bool, []Status, string) {
 		if r.Cmd == "@" {
 			if r.Object == "P" {
 				isOk, status = applySentenceParagraph(text, &r)
+			} else if r.Object == "W" {
+				isOk, status = applySentenceWord(text, &r)
 			}
 		}
 	}
@@ -77,7 +79,71 @@ func applySentenceParagraph(text string, r *Rules) (bool, []Status) {
 
 		currP := strings.TrimSpace(string(pagraph[k]))
 
-		if processThisParagraph(beforeP, k, r, len(pagraph)) && len(currP) > 0 && len(r.Exp) > posRule {
+		if canProcessThis(beforeP, k, r, len(pagraph)) && len(currP) > 0 && len(r.Exp) > posRule {
+			beforeP = k
+
+			tmp := string([]rune(currP)[0])
+			tmp = removeAccents(tmp)
+			tmp = strings.ToLower(tmp)
+
+			v := validChars.ReplaceAllString(tmp, "")
+			curr := strings.ToLower(string(r.Exp[posRule]))
+
+			o := Status{}
+			o.Received = v
+			o.Needed = curr
+			o.TextPosition = k
+			o.isError = true
+
+			// only if is a valid char
+			if len(v) > 0 && tmp == curr && curr != " " && curr != "" {
+				o.isError = false
+				countOk++
+			}
+
+			out = append(out, o)
+
+			posRule++
+		}
+	}
+
+	if countOk == len(r.Exp) {
+		allOk = true
+	}
+
+	return allOk, out
+}
+
+func applySentenceWord(text string, r *Rules) (bool, []Status) {
+	text = clearPunctuation(text)
+
+	word := strings.Split(text, " ")
+
+	for i := 0; i < len(word); i++ {
+		if len(strings.TrimSpace(string(word[i]))) == 0 {
+			// deleting
+			word = append(word[:i], word[i+1:]...)
+		}
+	}
+
+	r.Exp = clearPunctuation(r.Exp)
+	r.Exp = removeAccents(r.Exp)
+	r.Exp = strings.TrimSpace(r.Exp)
+	r.Exp = strings.Replace(r.Exp, " ", "", -1)
+
+	validChars := regexp.MustCompile(`[^a-zA-Z0-9]`)
+
+	posRule := 0
+	out := []Status{}
+
+	allOk := true
+	beforeP := 0 - r.Each
+	countOk := 0
+
+	for k := 0; k < len(word); k++ {
+		currP := strings.TrimSpace(string(word[k]))
+
+		if canProcessThis(beforeP, k, r, len(word)) && len(currP) > 0 && len(r.Exp) > posRule {
 			beforeP = k
 
 			tmp := string([]rune(currP)[0])
@@ -129,7 +195,7 @@ func removeAccents(text string) string {
 	return s
 }
 
-func processThisParagraph(before int, index int, r *Rules, countParagraph int) bool {
+func canProcessThis(before int, index int, r *Rules, countElements int) bool {
 	valid := false
 	newIdx := index + 1
 
@@ -142,7 +208,7 @@ func processThisParagraph(before int, index int, r *Rules, countParagraph int) b
 			valid = true
 		}
 	} else if len(r.EachOpAfter) > 0 {
-		if r.EachOpAfter == ":" && countParagraph-r.Each <= newIdx {
+		if r.EachOpAfter == ":" && countElements-r.Each <= newIdx {
 			valid = true
 		}
 	}
