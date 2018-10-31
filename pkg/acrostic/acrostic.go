@@ -16,6 +16,7 @@ type Status struct {
 	Needed       string
 	TextPosition int
 	isError      bool
+	Object       string
 }
 
 // IsValidRules returns true or false, if current rule is valid
@@ -28,23 +29,23 @@ func IsValidRules(rule string) (bool, Rules) {
 
 // ApplyRules receives te original text and rule to validate
 // returs slices only with erros, and boolean to define if have errors or not
-func ApplyRules(text string, rule string) (bool, []Status) {
+func ApplyRules(text string, rule string) (bool, []Status, string) {
 	// validate rules
 	valid, r := IsValidRules(rule)
 
 	isOk := false
-	error := []Status{}
+	status := []Status{}
 
 	if valid {
 		// process sentence
 		if r.Cmd == "@" {
 			if r.Object == "P" {
-				isOk, error = applySentenceParagraph(text, &r)
+				isOk, status = applySentenceParagraph(text, &r)
 			}
 		}
 	}
 
-	return isOk, error
+	return isOk, status, r.Object
 }
 
 func applySentenceParagraph(text string, r *Rules) (bool, []Status) {

@@ -51,8 +51,9 @@ func testAcrosticRules(rules string) {
 }
 
 func testAcrosticSentence(text string, rule string) {
-	valid, proc := acrostic.ApplyRules(text, rule)
+	valid, proc, objectType := acrostic.ApplyRules(text, rule)
 
 	fmt.Println(proc)
+	fmt.Println(objectType)
 	fmt.Println(valid)
 }
