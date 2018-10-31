@@ -1,6 +1,8 @@
 package acrostic
 
 import (
+	"io/ioutil"
+	"path/filepath"
 	"testing"
 )
 
@@ -31,5 +33,31 @@ func BenchmarkIsValidRules(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		IsValidRules(test)
+	}
+}
+
+func TestApplyRules(t *testing.T) {
+	absPath, _ := filepath.Abs("testdata/sentence-acrostic.txt")
+	text, _ := ioutil.ReadFile(absPath)
+
+	rules := `{P}|1|[%2]@"verás que um filho teu não foge a luta"`
+
+	valid, _, _ := ApplyRules(string(text), rules)
+
+	if !valid {
+		t.Errorf("Fail test ApplyRutes")
+	}
+}
+
+func BenchmarkApplyRules(b *testing.B) {
+	absPath, _ := filepath.Abs("testdata/sentence-acrostic.txt")
+	text, _ := ioutil.ReadFile(absPath)
+
+	rules := `{P}|1|[%2]@"verás que um filho teu não foge a luta"`
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		ApplyRules(string(text), rules)
 	}
 }
