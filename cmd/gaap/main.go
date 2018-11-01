@@ -21,13 +21,14 @@ func main() {
 	// testAcrosticRules(`{P}|1|[2]^"a"`)
 	// testAcrosticRules(`{P}|0|[%2]#({W}|0|[:2]^"br")`)
 	// testAcrosticRules(`{P}|1|[:2]^"a"`)
-	testAcrosticRules(`{P}|1|[:2]@"veras que um filho teu nao foge a luta"`)
+	// testAcrosticRules(`{P}|1|[:2]@"veras que um filho teu nao foge a luta"`)
 
 	absPath, _ := filepath.Abs("testdata/sentence-acrostic.txt")
 	text, _ := ioutil.ReadFile(absPath)
 
 	// testAcrosticSentence(string(text), `{P}|1|[%2]@"verás que um filho teu não foge a luta"`)
-	testAcrosticSentence(string(text), `{W}|1|[%17]@"verás que um filho teu não foge a luta"`)
+	// testAcrosticSentence(string(text), `{W}|1|[%17]@"verás que um filho teu não foge a luta"`)
+	testAcrosticSentence(string(text), `{W}|1|[5]^"v"`)
 }
 
 func check(e error) {
