@@ -44,10 +44,22 @@ func ApplyRules(text string, rule string) (bool, []Status, string) {
 			} else if r.Object == "W" {
 				isOk, status = applySentenceWord(text, &r)
 			}
+		} else if r.Cmd == "^" {
+			if r.Object == "W" {
+				isOk, status = applyFirstLetter(text, &r)
+			}
 		}
 	}
 
 	return isOk, status, r.Object
+}
+
+func applyFirstLetter(text string, r *Rules) (bool, []Status) {
+	text = clearPunctuation(text)
+
+	letters := strings.Split(text, "")
+
+	return characterProcess(letters, r)
 }
 
 func applySentenceParagraph(text string, r *Rules) (bool, []Status) {
@@ -113,7 +125,9 @@ func characterProcess(itens []string, r *Rules) (bool, []Status) {
 
 			out = append(out, o)
 
-			posRule++
+			if r.Cmd == "@" {
+				posRule++
+			}
 		}
 	}
 
@@ -155,6 +169,10 @@ func canProcessThis(before int, index int, r *Rules, countElements int) bool {
 		}
 	} else if len(r.EachOpAfter) > 0 {
 		if r.EachOpAfter == ":" && countElements-r.Each <= newIdx {
+			valid = true
+		}
+	} else {
+		if index%r.Each == 0 {
 			valid = true
 		}
 	}
